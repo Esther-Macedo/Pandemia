@@ -8,6 +8,7 @@ import { lastValueFrom, map } from "rxjs";
 import * as fs from 'fs'
 import axios from 'axios';
 import readfileHelper from "./readfile.helper";
+import { token } from "src/token.config";
 
 
 
@@ -27,7 +28,7 @@ export class SendFile {
     let formData = new FormData();
     formData.append('file', streamedFile, filename);
     //acho que usar o token assim está errado?
-    formData.append('token', 'zpxD0M9vvSKbSEbwFwd9TCww1o296iaW');
+    formData.append('token', token.token);
     formData.append('folderId', folderId);
 
 
