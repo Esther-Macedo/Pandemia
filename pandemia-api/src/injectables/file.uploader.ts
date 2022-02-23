@@ -1,37 +1,54 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { Httpservice } from "./app.service";
-import { createReadStream, readFileSync} from "fs";
+import { createReadStream, readFileSync } from "fs";
 //só funcionou assim
 import * as FormData from 'form-data'
+import { lastValueFrom, map } from "rxjs";
+import * as fs from 'fs'
+import axios from 'axios';
+import readfileHelper from "./readfile.helper";
 
 
 
 
 @Injectable()
 export class SendFile {
-  constructor( private http:HttpService, private hs: Httpservice){}
- async sendToBrUsa(){
-   //pegar o server disponível
-    const server = await this.hs.getBestserver() 
-    const streamedFile = createReadStream( './src/csv/brusa.csv');
+  constructor(private http: HttpService, private hs: Httpservice) { }
 
-    console.log(server)
-    let formData = new FormData()
-    formData.append('file', streamedFile);
+  async sendToBrUsa(filePath: string, folderId:string, filename:string) {
+    //pegar o server disponível
+    try {
+      const server = await this.hs.getBestserver() 
+    let streamedFile = await readfileHelper(filePath)
+    console.log(streamedFile);
+
+
+    let formData = new FormData();
+    formData.append('file', streamedFile, filename);
     //acho que usar o token assim está errado?
-    formData.append('token','tokentokentoken')
-    formData.append('folderId','a87930fd-b9a1-4e33-a295-f5957f742452')
+    formData.append('token', 'zpxD0M9vvSKbSEbwFwd9TCww1o296iaW');
+    formData.append('folderId', folderId);
+
+
+
+
+
+    const response = await axios.post(`https://store4.gofile.io/uploadFile`, formData, { headers: formData.getHeaders() })
+    console.log(response);
+    } catch (error) {
+      console.log(error.response.data)
+    }
     
-    console.log(`https://${server}.gofile.io/uploadFile`)
-    const serv = this.http.post(`https://${server}.gofile.io/uploadFile`,formData);
-   
-    console.log('foi?')
+
+    //const serv = this.http.post(`https://${server}.gofile.io/uploadFile`, formData).pipe(map(res => { return console.log(res.status) }));
+    /* const p = await lastValueFrom(serv)
+    console.log(p.status, p.statusText); */
+    console.log('foi?');
   }
 
-  
-  
-} 
+
+}
 
 /* @Injectable()
 export class csv{

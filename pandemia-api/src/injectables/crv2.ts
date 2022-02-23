@@ -28,7 +28,7 @@ export class Csv2 {
     })
        const object = await this.http.getBrUsaData()
        c.writeRecords(object)
-       console.log('lesgo rodando')
+       console.log('lesgo rodando1')
   }
   async WriteCHINARUSSIA() {
         const c = createObjectCsvWriter({
@@ -48,7 +48,7 @@ export class Csv2 {
         })
         const object = await this.http.getChinaRussiaData()
         c.writeRecords(object) 
-        console.log('lesgo rodando')
+        console.log('lesgo rodando2')
 
     
     }
