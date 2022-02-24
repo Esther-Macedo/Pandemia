@@ -8,7 +8,7 @@ import { SendFile } from './injectables/file.uploader';
 export class AppController {
   constructor(private csv: Csv2, private send: SendFile) {}
 
-  @Cron('* 8,22 * * *')
+  @Cron('0 8,22 * * *')
 teste(){
 
     console.log('na tonga da mironga')
